@@ -7,18 +7,27 @@ crypto trader who has just been liquidated. Deterministic, stdlib only.
 
 import os
 
-FORTUNE = (
-    "Trader, you are now the proud owner of nothing. "
-    "Nothing, properly held, is the safest asset of all."
+FORTUNE_PARTS = (
+    "Trader, you are now the proud owner of nothing. ",
+    "Nothing, properly held, is the safest asset of all.",
 )
+
+
+def build_fortune() -> str:
+    """Rejoin the fortune parts into the single entry line."""
+    return "".join(FORTUNE_PARTS)
+
+
+def write_entry(path: str, text: str) -> None:
+    """Write the fortune line to path with a trailing newline."""
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text + "\n")
+    os.chmod(path, 0o644)
 
 
 def main() -> None:
     os.makedirs("/output", exist_ok=True)
-    path = "/output/entry.txt"
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(FORTUNE + "\n")
-    os.chmod(path, 0o644)
+    write_entry("/output/entry.txt", build_fortune())
 
 
 if __name__ == "__main__":
